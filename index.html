@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+  <body>
+    <div class="row">
+      <div class="input-field col s12">
+        <select id="seleccion">
+          <option value="1" selected>1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+        <label>Cards</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="s12">
+        <img class="responsive-img" id="img1" width="100%">
+      </div>
+    </div>
+    <div class="row" style="display:none" id="card2">
+      <div class="s12">
+        <img class="responsive-img" id="img2" width="100%">
+      </div>
+    </div>
+    <div class="row" style="display:none" id="card3">
+      <div class="s12">
+        <img class="responsive-img" id="img3" width="100%">
+      </div>
+    </div>
+    <script type="text/javascript">
+      var eleccion = [];
+      var num,ext;
+      var i=1;
+      do{
+        num = Math.floor(Math.random()*78)+1;
+        if (eleccion.indexOf(num)<0){
+          eleccion.push(num);
+          ext = (num<=56)?".png":".jpg";
+          document.getElementById("img"+i).src = "image" + num + ext;
+          i++;
+        }
+      } while(eleccion.length<3);
+      var selector = document.getElementById("seleccion");
+      selector.onchange = function(){
+        var valor = parseInt(selector.value,10);
+        var res = (valor > 2) ? "block" : "none";
+        document.getElementById("card3").style.display = res;
+        res = (valor > 1) ? "block" : "none";
+        document.getElementById("card2").style.display = res;
+      };
+      M.FormSelect.init(document.querySelectorAll('select'));
+    </script>
+  </body>
+</html>
