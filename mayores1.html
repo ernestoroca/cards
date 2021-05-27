@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="textos.js"></script>
+  </head>
+  <body>
+    <div clas="row">
+      <div clas="col s12">
+        <h5>Consciencia creativa</h5>
+      </div>  
+    </div>
+    <div class="row" id="cartas">
+    </div>
+    <div class="row" id="elegidas">
+    </div>
+    <div class="row" id="explicacion">
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <a onclick="reiniciar()" class="waves-effect waves-light btn">borrar</a>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var valores = [61,66,57,70,75,76,77,63,65,64,62,60,78,58,73,69,68,71,72,67,59,74];
+      var favorita = 0;
+      var peor = 0;
+      function reiniciar(){
+        favorita = 0;
+        peor = 0;
+        let len = valores.length;
+        let mezclador = [];
+        for(let i=0;i<len;i++){
+          mezclador.push({
+            pos: valores[i],
+            val: Math.random()
+          });
+        }
+        mezclador.sort(function(a,b){
+          return (a.val > b.val): +1 : -1;
+        });
+
+        let strHtml = "";
+        for(let i=0;i<len;i++){
+          let num = mezclador[i].pos;
+          let ext = (num<=56)?".png":".jpg";
+          let src = "image" + num + ext;
+          strHtml += `
+<div class="s6 m4 l2">
+  <img id="carta-${num}" class="responsive-img" src="${src}" width="100%">
+</div>
+          `;
+        }
+        document.getElementById("cartas").innerHTML = strHtml;
+        document.getElementById("elegidas").innerHTML = "";
+        document.getElementById("explicacion").innerHTML = "";
+        M.toast({html:"Elige la carta que te atrae más"});
+      }
+      document.getElementById("cartas").onclick = function(evento){
+        let target = evento.target;
+        let elid = target.id;
+        while (elid === ""){
+            target = target.parentNode;
+            elid = target.id;
+        }
+        if(elid === "cartas"){
+          return;
+        }
+        elid = elid.replace("carta-","");
+        let num = parseInt(elid,10);
+        if(favorita === 0){
+          favorita = num;
+          M.toast({html:"Elige la carta que te hace sentir más incómodo"});
+          return;
+        }
+        peor = num;
+        document.getElementById("cartas").innerHTML = "";
+        M.toast({html:"Habla en voz alta por qué elegistes cada carta"});
+        M.toast({html:"Luego revisa lo que dicen los arcanos de cada carta"});
+        
+        let ext = (favorita<=56)?".png":".jpg";
+        let src = "image" + favorita + ext;
+        let strHtml = `
+<div class="s6 m4 l2">
+  <img id="carta-${favorita}" class="responsive-img" src="${src}" width="100%">
+</div>
+          `;
+        
+        ext = (peor<=56)?".png":".jpg";
+        src = "image" + peor + ext;
+        strHtml += `
+<div class="s6 m4 l2">
+  <img id="carta-${peor}" class="responsive-img" src="${src}" width="100%">
+</div>
+          `;
+        document.getElementById("elegidas").innerHTML = strHtml;
+      };
+      document.getElementById("elegidas").onclick = function(evento){
+        let target = evento.target;
+        let elid = target.id;
+        while (elid === ""){
+            target = target.parentNode;
+            elid = target.id;
+        }
+        if(elid === "elegidas"){
+          return;
+        }
+        elid = elid.replace("carta-","");
+        let num = parseInt(elid,10);
+        
+        document.getElementById("explicacion").innerHTML = getTexto(num);
+      }
+      reiniciar();
+    </script>
+  </body>
+</html>
