@@ -1,0 +1,3 @@
+function getTexto(num){
+  return "";
+}
