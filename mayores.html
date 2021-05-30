@@ -134,6 +134,28 @@
         document.getElementById("cartas").innerHTML = strHtml;
         document.getElementById("elegidas").innerHTML = "";
         document.getElementById("explicacion").innerHTML = "";
+        setTimeout(repintar,1000);
+    }
+    function repintar(){
+        let len = valores.length;
+        let min = 0;
+        for(let i=0;i<len;i++){
+            let elem = document.getElementById("carta-"+valores[i]);
+            if(elem){
+                let alto = elem.clientHeight;
+                if(min === 0){
+                    min = alto;
+                } else if(alto < min){
+                    min = alto;
+                }
+            }
+        }
+        for(let i=0;i<len;i++){
+            let elem = document.getElementById("carta-"+valores[i]);
+            if(elem){
+                elem.style.height = ""+min+"px";
+            }
+        }
     }
     document.getElementById("cartas").onclick = function(evento){
         let target = evento.target;
@@ -163,11 +185,12 @@
         for(let i=0;i<maxElegidas;i++){
             lista += `
 <div class="col s6 m4 l2">
-  <img id="carta-${elegidas[i]}" class="responsive-img" src="imagen${elegidas[i]}.jpg" width="100%">
+  <img id="carta-${elegidas[i]}" class="responsive-img" src="image${elegidas[i]}.jpg" width="100%">
 </div>
             `;
         }
         document.getElementById("elegidas").innerHTML = lista;
+        setTimeout(repintar,1000);
     };
     document.getElementById("elegidas").onclick = function(evento){
         let target = evento.target;
