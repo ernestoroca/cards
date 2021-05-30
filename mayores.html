@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--script src="textos.js"></script-->
+  </head>
+  <body onload="iniciar()">
+    <div clas="row">
+      <div clas="col s12">
+        <h5>Intuiti Mayores</h5>
+      </div>
+    </div>
+    <div clas="row">
+      <div class="input-field col s12 m6 l3">
+        <select onchange="selector(this)">
+          <option value="1">Consciencia Creativa</option>
+          <option value="2">Bloque de Creatividad</option>
+          <option value="3">Llamada Creativa</option>
+          <option value="4">No me siente bien en el trabajo</option>
+          <option value="5">Me siento vacío</option>
+          <option value="6">Estoy bloqueado para escribir</option>
+          <option value="7">Dividido en dos opciones</option>
+          <option value="8">No estoy satisfecho en el trabajo</option>
+        </select>
+        <label>Analisis</label>
+      </div>
+    </div>
+    <div clas="row">
+      <div class="col s12" id="selector-text">
+      </div>
+    </div>
+    <div class="row" id="cartas">
+    </div>
+    <div class="row" id="elegidas">
+    </div>
+    <div class="row" id="explicacion">
+    </div>
+    <script type="text/javascript">
+    var valores = [61,66,57,70,75,76,77,63,65,64,62,60,78,58,73,69,68,71,72,67,59,74];
+    var elegidas = [];
+    var maxElegidas = 2;
+    function iniciar(){
+        M.FormSelect.init(document.querySelectorAll('select'));
+        reiniciar();
+    }
+    function selector(self){
+        let valor = self.value;
+        let texto;
+        elegidas = [];
+        switch(valor){
+            case "1":
+                texto = `<p>A: tu favorito (el que más te atrae)</p>
+                  <p>B: el que te hace sentir incómodo</p>`;
+                  maxElegidas = 2;
+                break;
+            case "2":
+                texto = `<p>A: cómo me siento</p>
+                  <p>B: cómo me gustaría sentirme</p>
+                  <p>C: naturaleza del bloqueo creativo</p>
+                  <p>D: Lo que necesito</p>`;
+                  maxElegidas = 4;
+                break;
+            case "3":
+                texto = `<p>A: dónde estoy</p>
+                  <p>B: dónde quiero estar</p>
+                  <p>C: qué me mueve</p>`;
+                  maxElegidas = 3;
+                break;
+            case "4":
+                texto = `<p>A: cómo me siento ahora mismo</p>
+                  <p>B: cómo me gustaría sentirme</p>
+                  <p>C: lo que se interpone en el camino entre A y B</p>
+                  <p>D: lo que podría ser de ayuda</p>`;
+                  maxElegidas = 4;
+                break;
+            case "5":
+                texto = `<p>A: mi vacío</p>
+                  <p>B: mi plenitud</p>
+                  <p>C: lo que se interpone en el camino entre A y B</p>
+                  <p>D: lo que podría ser de ayuda</p>`;
+                  maxElegidas = 4;
+                break;
+            case "6":
+                texto = `<p>A: yo con respecto al libro</p>
+                  <p>B: mi visión del libro</p>
+                  <p>C: la naturaleza del bloqueo</p>
+                  <p>D: lo que podría ser de ayuda</p>`;
+                  maxElegidas = 4;
+                break;
+            case "7":
+                texto = `<p>A: cómo me sentiría si eligiera la primera opción</p>
+                  <p>B: cómo me sentiría si eligiera la segunda opción</p>
+                  <p>C: la naturaleza de mi duda</p>`;
+                  maxElegidas = 3;
+                break;
+            case "6":
+                texto = `<p>A: cómo me siento ahora mismo</p>
+                  <p>B: cómo me gustaría sentirme</p>
+                  <p>C: lo que me mueve</p>
+                  <p>D: mi relación con el dinero</p>
+                  <p>E: mi relación con el prestigio</p>
+                  <p>F: mi relación con la libertad</p>`;
+                  maxElegidas = 6;
+        }
+        reiniciar();
+    }
+    function reiniciar(){
+        let len = valores.length;
+        let mezclador = [];
+        for(let i=0;i<len;i++){
+            mezclador.push({
+                pos: valores[i],
+                val: Math.random()
+            });
+        }
+        mezclador.sort(function(a,b){
+            return (a.val > b.val)? +1 : -1;
+        });
+
+        let strHtml = "";
+        for(let i=0;i<len;i++){
+            let num = mezclador[i].pos;
+            let ext = (num<=56)?".png":".jpg";
+            let src = "image" + num + ext;
+            strHtml += `
+<div class="col s6 m4 l2">
+  <img id="carta-${num}" class="responsive-img" src="${src}" width="100%">
+</div>
+            `;
+        }
+        document.getElementById("cartas").innerHTML = strHtml;
+        document.getElementById("elegidas").innerHTML = "";
+        document.getElementById("explicacion").innerHTML = "";
+    }
+    document.getElementById("cartas").onclick = function(evento){
+        let target = evento.target;
+        let elid = target.id;
+        while (elid === ""){
+            target = target.parentNode;
+            elid = target.id;
+        }
+        if(elid === "cartas"){
+            return;
+        }
+        elid = elid.replace("carta-","");
+        let num = parseInt(elid,10);
+        
+        if(elegidas.length < maxElegidas){
+            elegidas.push(num);
+        }
+        
+        if(elegidas.length < maxElegidas){
+            M.toast({html:"Elija su siguiente carta!!"});
+            return;
+        }
+        
+        document.getElementById("cartas").innerHTML = "";
+        
+        let lista = "";
+        for(let i=0;i<maxElegidas;i++){
+            lista += `
+<div class="col s6 m4 l2">
+  <img id="carta-${elegidas[i]}" class="responsive-img" src="imagen${elegidas[i]}.jpg" width="100%">
+</div>
+            `;
+        }
+        document.getElementById("elegidas").innerHTML = lista;
+    };
+    document.getElementById("elegidas").onclick = function(evento){
+        let target = evento.target;
+        let elid = target.id;
+        while (elid === ""){
+            target = target.parentNode;
+            elid = target.id;
+        }
+        if(elid === "elegidas"){
+            return;
+        }
+        elid = elid.replace("carta-","");
+        let num = parseInt(elid,10);
+        
+        document.getElementById("explicacion").innerHTML = getTexto(num);
+    }
+    </script>
+  </body>
+</html>
