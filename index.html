@@ -20,21 +20,18 @@
     
     <script type="text/javascript">
       var eleccion = [];
-      var num,ext;
-      var i=1;
       do{
-        num = Math.floor(Math.random()*78)+1;
+        let num = Math.floor(Math.random()*78)+1;
         if (eleccion.indexOf(num)<0){
           eleccion.push(num);
-          ext = (num<=56)?".png":".jpg";
-          document.getElementById("img"+i).src = "image" + num + ext;
-          i++;
         }
       } while(eleccion.length<5);
+      
       function imagen(num){
         let ext = (num<=56)?".png":".jpg";
         return "image" + num + ext;
       }
+      
       function imprimir(){
         var valor = parseInt(selector.value,10);
         let strHtml;
