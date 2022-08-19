@@ -10,28 +10,14 @@
     <div class="row">
       <div class="input-field col s12">
         <select id="seleccion">
-          <option value="1" selected>1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
+          <option value="3" selected>3</option>
+          <option value="5">5</option>
         </select>
         <label>Cards</label>
       </div>
     </div>
-    <div class="row">
-      <div class="s12">
-        <img class="responsive-img" id="img1" width="100%">
-      </div>
-    </div>
-    <div class="row" style="display:none" id="card2">
-      <div class="s12">
-        <img class="responsive-img" id="img2" width="100%">
-      </div>
-    </div>
-    <div class="row" style="display:none" id="card3">
-      <div class="s12">
-        <img class="responsive-img" id="img3" width="100%">
-      </div>
-    </div>
+    <div id="mesa"></div>
+    
     <script type="text/javascript">
       var eleccion = [];
       var num,ext;
@@ -44,15 +30,74 @@
           document.getElementById("img"+i).src = "image" + num + ext;
           i++;
         }
-      } while(eleccion.length<3);
-      var selector = document.getElementById("seleccion");
-      selector.onchange = function(){
+      } while(eleccion.length<5);
+      function imagen(num){
+        let ext = (num<=56)?".png":".jpg";
+        return "image" + num + ext;
+      }
+      function imprimir(){
         var valor = parseInt(selector.value,10);
-        var res = (valor > 2) ? "block" : "none";
-        document.getElementById("card3").style.display = res;
-        res = (valor > 1) ? "block" : "none";
-        document.getElementById("card2").style.display = res;
-      };
+        let strHtml;
+        if(valor === "3"){
+          strHtml = `
+    <div class="row">
+      <div class="col s12">
+        <img class="responsive-img" width="100%" src="${imagen(eleccion[0])}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <img class="responsive-img" width="100%" src="${imagen(eleccion[1])}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <img class="responsive-img" width="100%" src="${imagen(eleccion[2])}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <img class="responsive-img" width="100%" src="${imagen(eleccion[3])}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <img class="responsive-img" width="100%" src="${imagen(eleccion[4])}">
+      </div>
+    </div>
+          `;
+        } else {
+          strHtml = `
+    <div class="row">
+      <div class="col s4"></div>
+      <div class="col s4">
+        <img class="responsive-img" width="100%" src="${imagen(eleccion[0])}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4">
+        <img class="responsive-img" width="100%" src="${imagen(eleccion[1])}">
+      </div>
+      <div class="col s4">
+        <img class="responsive-img" width="100%" src="${imagen(eleccion[2])}">
+      </div>
+      <div class="col s4">
+        <img class="responsive-img" width="100%" src="${imagen(eleccion[3])}">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4"></div>
+      <div class="col s4">
+        <img class="responsive-img" width="100%" src="${imagen(eleccion[4])}">
+      </div>
+    </div>
+          `;
+        }
+        document.getElementById("mesa").innerHTML = strHtml;
+      }
+      imprimir();
+      var selector = document.getElementById("seleccion");
+      selector.onchange = imprimir();
       M.FormSelect.init(document.querySelectorAll('select'));
     </script>
   </body>
