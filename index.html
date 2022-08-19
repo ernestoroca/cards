@@ -27,6 +27,8 @@
         }
       } while(eleccion.length<5);
       
+      var selector = document.getElementById("seleccion");
+      
       function imagen(num){
         let ext = (num<=56)?".png":".jpg";
         return "image" + num + ext;
@@ -92,9 +94,11 @@
         }
         document.getElementById("mesa").innerHTML = strHtml;
       }
-      imprimir();
-      var selector = document.getElementById("seleccion");
+      
       selector.onchange = imprimir();
+      
+      imprimir();
+      
       M.FormSelect.init(document.querySelectorAll('select'));
     </script>
   </body>
