@@ -37,7 +37,7 @@
       function imprimir(){
         var valor = parseInt(selector.value,10);
         let strHtml;
-        if(valor === "3"){
+        if(valor === 3){
           strHtml = `
     <div class="row">
       <div class="col s12">
@@ -95,7 +95,7 @@
         document.getElementById("mesa").innerHTML = strHtml;
       }
       
-      selector.onchange = imprimir();
+      selector.onchange = imprimir;
       
       imprimir();
       
