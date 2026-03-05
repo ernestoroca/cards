@@ -19,6 +19,7 @@
     <div id="mesa"></div>
     
     <script type="text/javascript">
+      var mayores = ["I","II","III","IIII","V","VI","VII","VIII","VIIII","X","XI","XII","XIII","XIIII","XV","XVI","XVII","XVIII","XVIIII","XX","XXI","XXII"]
       var eleccion = [];
       do{
         let num = Math.floor(Math.random()*78)+1;
@@ -30,8 +31,14 @@
       var selector = document.getElementById("seleccion");
       
       function imagen(num){
-        let ext = (num<=56)?".png":".jpg";
-        return "image" + num + ext;
+        if(num<=56){
+          let s = Math.ceil(num/14);
+          let m = num - s*14;
+          return (""+s)+(""+m)+".jpg";
+        } else {
+          num -= 57;
+          return mayores[num]+".jpg";
+        }
       }
       
       function imprimir(){
